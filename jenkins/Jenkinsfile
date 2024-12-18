@@ -54,35 +54,23 @@
 // }
 
 pipeline {
-    agent {
-        docker {
-            image 'node:lts-buster-slim'
-            args '-p 3000:3000'
-        }
-    }
-
-    environment {
-        CI = 'true'
-    }
-
+    agent any
     stages {
         stage('Build') {
             steps {
-                sh 'npm install'
+                bat 'npm install'  // Windows batch command
             }
         }
-
         stage('Test') {
             steps {
-                sh './jenkins/scripts/test.sh'  // Should work inside Docker container
+                bat 'powershell -Command "bash ./jenkins/scripts/test.sh"'  // Run the shell script using bash
             }
         }
-
-        stage('Deliver') {
+        stage('Deliver') { 
             steps {
-                sh './jenkins/scripts/deliver.sh'
-                input message: 'Finished using the website? (Click "Proceed" to continue)'
-                sh './jenkins/scripts/kill.sh'
+                bat 'powershell -Command "bash ./jenkins/scripts/deliver.sh"'  // Run the shell script using bash
+                input message: 'Finished using the web site? (Click "Proceed" to continue)' 
+                bat 'powershell -Command "bash ./jenkins/scripts/kill.sh"'  // Run the shell script using bash
             }
         }
     }
