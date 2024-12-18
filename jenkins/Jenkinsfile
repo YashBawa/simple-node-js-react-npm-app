@@ -1,53 +1,84 @@
-// //  declarative Pipeline it is
-// //  scripted pipeline as well 
+// // //  declarative Pipeline it is
+// // //  scripted pipeline as well 
+// // pipeline {
+// //     agent {
+// //         docker {
+// //             image 'node:lts-buster-slim'
+// //             args '-p 3000:3000'
+// //         }
+// //     }
+// //     environment {
+// //         CI = 'true'
+// //     }
+// //     stages {
+// //         stage('Build') {
+// //             steps {
+// //                 sh 'npm install'
+// //             }
+// //         }
+// //         stage('Test') {
+// //             steps {
+// //                 sh './jenkins/scripts/test.sh'
+// //             }
+// //         }
+// //         stage('Deliver') {
+// //             steps {
+// //                 sh './jenkins/scripts/deliver.sh'
+// //                 input message: 'Finished using the web site? (Click "Proceed" to continue)'
+// //                 sh './jenkins/scripts/kill.sh'
+// //             }
+// //         }
+// //     }
+// // }
 // pipeline {
-//     agent {
-//         docker {
-//             image 'node:lts-buster-slim'
-//             args '-p 3000:3000'
-//         }
-//     }
-//     environment {
-//         CI = 'true'
-//     }
+//     agent any
 //     stages {
 //         stage('Build') {
 //             steps {
-//                 sh 'npm install'
+//                 bat 'npm install'
 //             }
 //         }
 //         stage('Test') {
 //             steps {
-//                 sh './jenkins/scripts/test.sh'
+//                 bat './jenkins/scripts/test.sh'
 //             }
 //         }
-//         stage('Deliver') {
+//         stage('Deliver') { 
 //             steps {
-//                 sh './jenkins/scripts/deliver.sh'
-//                 input message: 'Finished using the web site? (Click "Proceed" to continue)'
-//                 sh './jenkins/scripts/kill.sh'
+//                 bat './jenkins/scripts/deliver.sh' 
+//                 input message: 'Finished using the web site? (Click "Proceed" to continue)' 
+//                 bat './jenkins/scripts/kill.sh' 
 //             }
 //         }
 //     }
 // }
+
+
 pipeline {
     agent any
+
+    environment {
+        CI = 'true'
+    }
+
     stages {
         stage('Build') {
             steps {
                 bat 'npm install'
             }
         }
+
         stage('Test') {
             steps {
-                bat './jenkins/scripts/test.sh'
+                bat 'jenkins\\scripts\\test.bat'  // Use the correct Windows path separator and file extension
             }
         }
-        stage('Deliver') { 
+
+        stage('Deliver') {
             steps {
-                bat './jenkins/scripts/deliver.sh' 
-                input message: 'Finished using the web site? (Click "Proceed" to continue)' 
-                bat './jenkins/scripts/kill.sh' 
+                bat 'jenkins\\scripts\\deliver.bat'
+                input message: 'Finished using the website? (Click "Proceed" to continue)'
+                bat 'jenkins\\scripts\\kill.bat'
             }
         }
     }
