@@ -1,11 +1,9 @@
-
-
 pipeline {
     agent any
     stages {
         stage('Build') {
             steps {
-                sh 'npm install'  // Windows batch command
+                sh 'npm install'  // Changed from bat to sh
             }
         }
         stage('Test') {
