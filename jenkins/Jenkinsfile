@@ -5,7 +5,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                bat 'npm install'  // Windows batch command
+                sh 'npm install'  // Windows batch command
             }
         }
         stage('Test') {
